@@ -1,42 +1,52 @@
 #main.py
+# Name: Ben Ujvagi, Jacob Shultze, Danny Barnhouse, Dobry Shaw
+# email:  ujvagibw@mail.uc.edu, schul2jt@mail.uc.edu, barnhodw@mail.uc.edu, shawdp@mail.uc.edu
+# Assignment Number: Assignment 09
+# Due Date:  11/7/2024
+# Course #/Section:  IS4010-001
+# Semester/Year:  Fall 2024
+# Brief Description of the assignment: Connected to a database and ran some queries on it
+# Brief Description of what this module does: Grabs everything and prints the sentence
 
 
-from NewFolder1 import *
-from NewFolder2 import *
-from NewFolder3 import *
+from NewFolder1.module1 import get_connection
+from NewFolder2.module2 import get_brand, get_manufacturer, get_products
+from NewFolder3.module3 import create_sentence, get_items_sold, select_random_product
+
+import pyodbc
+
+
+
 
 def main():
     conn = get_connection()
-    if conn is None:
-        print("Failed to connect to the database.")
-        return
-
+    
     cursor = conn.cursor()
 
-    # Step 1: Fetch products
-    products = fetch_products(cursor)
+    
+    products = get_products(cursor)
 
-    # Step 2: Select a random product
+   
     selected_product = select_random_product(products)
     description = selected_product.Description
     product_id = selected_product.ProductID
     manufacturer_id = selected_product.ManufacturerID
     brand_id = selected_product.BrandID
 
-    # Step 3: Fetch manufacturer name
-    manufacturer_name = fetch_manufacturer(cursor, manufacturer_id)
+   
+    manufacturer_name = get_manufacturer(cursor, manufacturer_id)
 
-    # Step 4: Fetch brand name
-    brand_name = fetch_brand(cursor, brand_id)
+    
+    brand_name = get_brand(cursor, brand_id)
 
-    # Step 5: Fetch number of items sold
-    number_of_items_sold = fetch_number_of_items_sold(cursor, product_id)
+    
+    number_of_items_sold = get_items_sold(cursor, product_id)
 
-    # Step 6: Build and print the sentence
-    sentence = build_sentence(description, manufacturer_name, brand_name, number_of_items_sold)
+    
+    sentence = create_sentence(description, manufacturer_name, brand_name, number_of_items_sold)
     print(sentence)
 
-    # Close the connection
+    
     conn.close()
 
 if __name__ == "__main__":
